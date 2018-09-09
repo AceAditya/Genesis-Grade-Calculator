@@ -3,13 +3,7 @@ from selenium.webdriver.common.keys import Keys
 import numpy as np
 from tkinter import *
 
-
-def getInfo():
-    info = ['parents.mcvts.net', 'natalex@optonline.net', 'Natella', 4, 10]
-    info1 = ['parents.westfieldnjk12.org', 'jkneht@gmail.com', 'michael', 3, 11]
-    return info
 def openGenesis(information):
-    #information = getInfo()
     driver = webdriver.Chrome()
     genesis = information[0]
     if 'https://' not in genesis:
@@ -23,9 +17,11 @@ def openGenesis(information):
     driver.find_element_by_class_name('saveButton').click()
     driver.implicitly_wait(5)
     return driver
+	
 def goToGrading(driver, info):
     driver.find_element_by_xpath("//div[@class = 'headerCategories']/span[{}]".format(info[3])).click()
     driver.find_element_by_xpath("//div[@class = 'studentTabBar']/span[2]").click()
+	
 def gatherGrade(driver, grade):
     grades = []
     b = 3
@@ -40,10 +36,6 @@ def gatherGrade(driver, grade):
             tally += 1
             if tally >= 2 * max:
                 break
-
-
-
-        #FG = fg.find_element_by_xpath("//td[@class='cellLeft[2]']").text
         try:
             fg2 = driver.find_element_by_xpath("//tbody/tr[{}]/td[5]".format(b)).text
             #print(fg2)
@@ -52,10 +44,9 @@ def gatherGrade(driver, grade):
             tally += 1
             if tally >= 2 * max:
                 break
-
-        #FG2 = fg2.find_element_by_xpath("//td[@class='cellLeft[2]']").text
         b = b + 2
     return grades
+	
 def gatherCredits(driver, grade):
     max = grade - 9
     credits = []
@@ -70,8 +61,6 @@ def gatherCredits(driver, grade):
             tally += 1
             if tally >= 2 * max:
                 break
-
-        #FG = fg.find_element_by_xpath("//td[@class='cellLeft[2]']").text
         try:
             fc2 = driver.find_element_by_xpath("//tbody/tr[{}]/td[7]".format(b)).text
           #  print(fc2)
@@ -80,16 +69,12 @@ def gatherCredits(driver, grade):
             tally += 1
             if tally >= 2 * max:
                 break
-
-        #FG2 = fg2.find_element_by_xpath("//td[@class='cellLeft[2]']").text
         b = b + 2
-
     return credits
+	
 def print_GPA(credits, grades):
-
 	for i in range(len(credits)):
 		credits[i] = float(credits[i])
-
 	credits_numpy = np.array(credits)
 	numbers = []
 	letter_grades = ["A+","A", "A-", "B+", "B" , "B-", "C+", "C", "C-" , "D", "F"]
@@ -110,13 +95,11 @@ def print_GPA(credits, grades):
 	return(round(answer, 2))
 
 def driver (info):
-	#info = getInfo()
 	driver = openGenesis(info)
 	goToGrading(driver, info)
 	grades = gatherGrade(driver, info[4])
 	credits = gatherCredits(driver, info[4])
 	lsum["text"] = "GPA: " + str(print_GPA(credits, grades)) 
-
 data = []
 master = Tk()
 master.title ("Genesis GPA Calculator")
@@ -125,6 +108,7 @@ e2 = Entry(master)
 e3 = Entry(master)
 e4 = Entry(master)
 e5 = Entry(master)
+
 def do ():
 	data.append( e1.get())
 	data.append( e2.get())
@@ -132,6 +116,7 @@ def do ():
 	data.append (int(e4.get()))
 	data.append (int(e5.get()))
 	driver(data)
+
 Label(master, text="Exact Link to Genesis").grid(row=0)
 Label(master, text="Username").grid(row=1)
 Label(master, text="Password").grid(row=2)
@@ -150,5 +135,3 @@ lsum = Label(master, text = 'GPA:')
 lsum.grid(row=6, column=2, sticky=W, pady=4)
 
 mainloop()
-
-
