@@ -15,3 +15,6 @@ We learned how to web scraping using Selenium as well as creating a GUI with Tki
 
 ## What's next for GPA Grade Calculator
 We would hope to be able to create a chrome extension out of the project/
+
+## Collaborators
+@zarskyb
